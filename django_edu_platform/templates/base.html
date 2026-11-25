@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}منصة الاختبارات وتحليل الأداء — ميرام نبهان{% endblock %}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: 'IBM Plex Sans Arabic', sans-serif; background: #f9faf8; color: #0f172a; margin: 0; }
+    h1, h2, h3 { font-family: 'Cairo', sans-serif; margin-top: 0; }
+    .container { max-width: 1120px; margin: 0 auto; padding: 24px; }
+    .topbar { background: #fff; border-bottom: 1px solid #e2e8f0; padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+    .nav-links { display: flex; gap: 20px; align-items: center; }
+    .nav-links a { color: #334155; text-decoration: none; font-weight: 600; font-size: 14px; }
+    .nav-links a:hover { color: #0f766e; }
+    .card { background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 20px; margin-bottom: 18px; }
+    .btn-primary { display: inline-block; background: #0f766e; color: #fff; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: 600; text-decoration: none; font-size: 14px; }
+    .btn-primary:hover { background: #115e59; }
+    .hero-banner { position: relative; overflow: hidden; border-radius: 20px; min-height: 320px; display: flex; align-items: center; padding: 36px; margin-bottom: 24px; color: #fff; }
+    .hero-banner img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: right; }
+    .hero-scrim { position: absolute; inset: 0; background: linear-gradient(to left, rgba(15, 23, 42, 0.92), rgba(15, 23, 42, 0.78), rgba(15, 23, 42, 0.72)); }
+    .hero-content { position: relative; z-index: 2; max-width: 720px; }
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+    .tab-card { display: flex; gap: 12px; align-items: center; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 12px; }
+    .tab-card img { width: 84px; height: 64px; object-fit: cover; border-radius: 10px; flex-shrink: 0; }
+    .alert-success { background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; padding: 12px 16px; border-radius: 10px; margin-bottom: 12px; }
+    .alert-error { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; padding: 12px 16px; border-radius: 10px; margin-bottom: 12px; }
+    .site-footer { border-top: 1px solid #e2e8f0; background: #fff; padding: 20px 24px; margin-top: 40px; font-size: 13px; color: #475569; }
+    .footer-inner { max-width: 1120px; margin: 0 auto; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <strong>منصة الاختبارات وتحليل الأداء</strong>
+    <nav class="nav-links">
+      <a href="{% url 'home' %}">الرئيسية</a>
+      <a href="{% url 'student_dashboard' %}">لوحة الطالب</a>
+      <a href="{% url 'teacher_dashboard' %}">لوحة المعلم</a>
+    </nav>
+    <a href="{% url 'student_dashboard' %}" class="btn-primary">ابدأ الاختبار</a>
+  </header>
+  <main class="container">
+    {% for message in messages %}
+      <div class="{% if message.tags == 'error' %}alert-error{% else %}alert-success{% endif %}">{{ message }}</div>
+    {% endfor %}
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span><strong>منصة الاختبارات وتحليل الأداء</strong> — تصميم وتنفيذ الطالبة: ميرام نبهان (Miram Nabhan)</span>
+      <span>جامعة دمياط · كلية التربية النوعية · قسم الحاسب الآلي</span>
+    </div>
+  </footer>
+</body>
+</html>

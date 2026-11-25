@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<section class="hero-banner">
+  <img src="{% static 'images/hero_backdrop_miram_1795629743327.jpg' %}" alt="خلفية توضيحية لطالبة تدوّن ملاحظات برمجة بايثون" />
+  <div class="hero-scrim"></div>
+  <div class="hero-content">
+    <p style="font-size: 12px; color: #99f6e4; margin-bottom: 8px;">جامعة دمياط · كلية التربية النوعية · مقرر برمجة البايثون 2 (د/ صفاء محمود العطوى)</p>
+    <h1 style="font-size: 34px; margin-bottom: 10px;">منصة الاختبارات وتحليل الأداء</h1>
+    <p style="color: #fde68a; font-weight: 600; margin-bottom: 10px;">إعداد وتصميم الطالبة: ميرام نبهان (Miram Nabhan)</p>
+    <p style="line-height: 1.7; color: #f1f5f9;">بيئة تعليمية متكاملة لإدارة الاختبارات، التصحيح التلقائي الفوري، متابعة الحضور، والتنبؤ المبكر باحتياجات الدعم الأكاديمي باستخدام خوارزمية KNN.</p>
+  </div>
+</section>
+
+<section class="card">
+  <h2>مرحباً بك! هل أنت طالب أم معلم؟</h2>
+  <p style="color: #475569; font-size: 14px;">اختر صفتك وأدخل بياناتك ليتم فتح الصفحة المناسبة لك تلقائياً.</p>
+  <form method="post" style="display: grid; gap: 12px;">
+    {% csrf_token %}
+    <div style="display: flex; gap: 16px;">
+      <label><input type="radio" name="role" value="student" checked onchange="toggleRoleFields(this.value)"> أنا طالب</label>
+      <label><input type="radio" name="role" value="teacher" onchange="toggleRoleFields(this.value)"> أنا معلم</label>
+    </div>
+    <input type="text" name="full_name" placeholder="الاسم الكامل" required style="padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px;">
+    <div id="student-classroom-box">
+      <select name="classroom" style="padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; width: 100%;">
+        <option value="حاسب آلي">حاسب آلي</option>
+        <option value="موسيقية">موسيقية</option>
+        <option value="إعلام">إعلام</option>
+      </select>
+    </div>
+    <div id="teacher-subject-box" style="display: none;">
+      <input type="text" name="subject_name" placeholder="المادة الدراسية (مثال: برمجة البايثون 2)" style="padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; width: 100%;">
+    </div>
+    <select name="academic_year" style="padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px;">
+      <option value="الفرقة الأولى">الفرقة الأولى</option>
+      <option value="الفرقة الثانية" selected>الفرقة الثانية</option>
+      <option value="الفرقة الثالثة">الفرقة الثالثة</option>
+      <option value="الفرقة الرابعة">الفرقة الرابعة</option>
+    </select>
+    <button type="submit" class="btn-primary">دخول إلى الصفحة المناسبة</button>
+  </form>
+  <script>
+    function toggleRoleFields(role) {
+      document.getElementById('student-classroom-box').style.display = role === 'student' ? 'block' : 'none';
+      document.getElementById('teacher-subject-box').style.display = role === 'teacher' ? 'block' : 'none';
+    }
+  </script>
+</section>
+
+<section class="card">
+  <h2>أقسام المنصة وما يقدمه كل تبويب</h2>
+  <div class="grid-2">
+    <div class="tab-card">
+      <img src="{% static 'images/cute_student_quiz_1795629744089.jpg' %}" alt="بوابة الطالب" />
+      <div>
+        <h3 style="margin-bottom: 4px; font-size: 16px;">لوحة الطالب</h3>
+        <p style="margin: 0; font-size: 13px; color: #475569;">حل الاختبارات التفاعلية والحصول على النتيجة والتقدير ومرجع الكتاب فوراً.</p>
+      </div>
+    </div>
+    <div class="tab-card">
+      <img src="{% static 'images/cute_analytics_charts_1795629745117.jpg' %}" alt="لوحة المعلم" />
+      <div>
+        <h3 style="margin-bottom: 4px; font-size: 16px;">لوحة المعلم</h3>
+        <p style="margin: 0; font-size: 13px; color: #475569;">الرسوم البيانية، إنشاء الأسئلة واستيراد CSV، الحضور والإشعارات، وتنبؤات KNN.</p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

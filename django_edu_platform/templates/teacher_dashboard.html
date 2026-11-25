@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<section class="card">
+  <small style="color: #0f766e; font-weight: 600;">لوحة المعلم والتحليلات · إعداد الطالبة ميرام نبهان</small>
+  <h2 style="margin-top: 4px;">لوحة المعلم — إدارة الاختبارات والحضور والتحليلات</h2>
+  <div class="grid-2" style="margin-top: 12px;">
+    <div class="tab-card">
+      <img src="{% static 'images/cute_analytics_charts_1795629745117.jpg' %}" alt="التحليلات البيانية" />
+      <div><strong>التحليلات والرسوم</strong><p style="margin: 4px 0 0; font-size: 12px; color: #475569;">متوسط الدرجات وتصدير كشف CSV.</p></div>
+    </div>
+    <div class="tab-card">
+      <img src="{% static 'images/cute_csv_factory_1795629745358.jpg' %}" alt="الاختبارات و CSV" />
+      <div><strong>الاختبارات والـ CSV</strong><p style="margin: 4px 0 0; font-size: 12px; color: #475569;">مصنع الأسئلة Factory Method واستيراد yield.</p></div>
+    </div>
+    <div class="tab-card">
+      <img src="{% static 'images/cute_attendance_bell_1795629746816.jpg' %}" alt="الحضور والإشعارات" />
+      <div><strong>الحضور والإشعارات</strong><p style="margin: 4px 0 0; font-size: 12px; color: #475569;">تسجيل الغياب وتنبيهات Observer الفورية.</p></div>
+    </div>
+    <div class="tab-card">
+      <img src="{% static 'images/cute_ai_knn_1795629746760.jpg' %}" alt="تنبؤ KNN" />
+      <div><strong>تنبؤ الذكاء الاصطناعي</strong><p style="margin: 4px 0 0; font-size: 12px; color: #475569;">تصنيف الطلاب بخوارزمية KNeighborsClassifier.</p></div>
+    </div>
+  </div>
+</section>
+<div class="card">
+  <h3>إضافة سؤال جديد (Factory Method)</h3>
+  <form method="post">
+    {% csrf_token %}
+    <input type="hidden" name="action" value="add_question">
+    <select name="quiz_id">
+      {% for quiz in quizzes %}<option value="{{ quiz.id }}">{{ quiz.title }}</option>{% endfor %}
+    </select>
+    <select name="question_type">
+      <option value="mcq">اختيار من متعدد</option>
+      <option value="true_false">صح وخطأ</option>
+      <option value="fill_blank">إكمال الفراغات</option>
+    </select>
+    <input type="text" name="prompt" placeholder="نص السؤال" required>
+    <input type="text" name="options" placeholder="الخيارات مفصولة بـ |">
+    <input type="text" name="correct_answer" placeholder="الإجابة الصحيحة" required>
+    <input type="number" name="points" value="2" min="1" max="50">
+    <button type="submit" class="btn-primary">حفظ السؤال</button>
+  </form>
+</div>
+<div class="card">
+  <h3>سجل الدرجات</h3>
+  <a href="{% url 'export_grades_csv' %}" class="btn-primary">تصدير كشف الدرجات CSV</a>
+  <ul>
+    {% for r in results %}
+      <li>{{ r.student.full_name }} — {{ r.quiz.title }}: {{ r.percentage }}% ({{ r.grade_label }})</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

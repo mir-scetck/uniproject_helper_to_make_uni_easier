@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<section class="card">
+  <div class="tab-card" style="background: #fff; border: none; padding: 0;">
+    <img src="{% static 'images/cute_student_quiz_1795629744089.jpg' %}" alt="لوحة الطالب" style="width: 140px; height: 105px;" />
+    <div>
+      <small style="color: #0f766e; font-weight: 600;">بوابة الطالب التفاعلية · تصميم الطالبة ميرام نبهان</small>
+      <h2 style="margin-bottom: 6px;">لوحة الطالب — حل الاختبار التفاعلي</h2>
+      <p style="margin: 0; font-size: 14px; color: #475569;">اختر إجاباتك في أسئلة الاختيار من متعدد وصح وخطأ وإكمال الفراغات لتحصل على التصحيح التلقائي الفوري.</p>
+    </div>
+  </div>
+</section>
+{% if result %}
+  <div class="{% if result.passed %}alert-success{% else %}alert-error{% endif %}">
+    نتيجتك: {{ result.score }} / {{ result.total_points }} ({{ result.percentage }}% — التقدير: {{ result.grade_label }})
+  </div>
+{% endif %}
+{% if selected_quiz %}
+<form method="post" class="card">
+  {% csrf_token %}
+  <input type="hidden" name="quiz_id" value="{{ selected_quiz.id }}">
+  <h3>{{ selected_quiz.title }}</h3>
+  {% for q in selected_quiz.questions.all %}
+    <div class="card">
+      <p><strong>{{ forloop.counter }}. {{ q.prompt }}</strong> ({{ q.points }} درجات)</p>
+      {% if q.question_type == 'fill_blank' %}
+        <input type="text" name="question_{{ q.id }}" placeholder="اكتب الإجابة هنا..." required>
+      {% else %}
+        {% for opt in q.options_json %}
+          <label style="display:block; margin: 6px 0;">
+            <input type="radio" name="question_{{ q.id }}" value="{{ opt }}" required> {{ opt }}
+          </label>
+        {% endfor %}
+      {% endif %}
+    </div>
+  {% endfor %}
+  <button type="submit" class="btn-primary">إرسال الإجابات والتصحيح التلقائي</button>
+</form>
+{% endif %}
+{% endblock %}
